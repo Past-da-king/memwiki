@@ -59,14 +59,23 @@ class RecordingTileService : TileService() {
             return
         }
 
+        // Route through the proxy activity. Android 14+ blocks starting a mic-typed foreground
+        // service directly from a background TileService click when the app process is dead.
         val starting = !RecordingService.isRecording.value
-        val svc = Intent(this, RecordingService::class.java).apply {
-            action = if (starting) RecordingService.ACTION_START else RecordingService.ACTION_STOP
+        val proxyIntent = Intent(this, RecordingProxyActivity::class.java).apply {
+            putExtra(
+                RecordingProxyActivity.EXTRA_TARGET_ACTION,
+                if (starting) RecordingService.ACTION_START else RecordingService.ACTION_STOP
+            )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION)
         }
-        if (starting) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startForegroundService(svc) else startService(svc)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            startActivityAndCollapse(android.app.PendingIntent.getActivity(
+                this, 2, proxyIntent,
+                android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
+            ))
         } else {
-            startService(svc)
+            @Suppress("DEPRECATION") startActivityAndCollapse(proxyIntent)
         }
         refreshTile()
     }

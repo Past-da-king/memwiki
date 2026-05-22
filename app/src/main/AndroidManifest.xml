@@ -37,6 +37,18 @@
             android:exported="false"
             android:foregroundServiceType="microphone" />
 
+        <!-- Invisible proxy activity. The QS tile launches this so the system treats the
+             mic foreground service start as initiated by a foreground activity, which Android
+             14+ requires. The activity finishes immediately after starting/stopping the service. -->
+        <activity
+            android:name=".audio.RecordingProxyActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:launchMode="singleInstance" />
+
         <!-- Quick Settings tile. User adds this manually via Edit Tiles in the QS panel.
              A tap toggles recording on/off via the RecordingService. -->
         <service
