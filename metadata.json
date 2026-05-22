@@ -1,0 +1,6 @@
+{
+  "name": "MemWiki",
+  "description": "MemWiki — a personal, compounding knowledge base where every note, voice memo, image, or URL becomes interlinked pages you can search and chat with.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

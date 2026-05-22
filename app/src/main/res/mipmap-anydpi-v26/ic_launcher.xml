@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- foreground = main coloured logo (used when "Themed icons" is OFF in launcher).
+     monochrome = white silhouette (used when "Themed icons" is ON; system tints it). -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_main" />
+    <monochrome android:drawable="@drawable/ic_launcher_mono" />
+</adaptive-icon>
